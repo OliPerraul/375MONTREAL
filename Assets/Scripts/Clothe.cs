@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Clothe : MonoBehaviour
 {
-    //reference of all the themes
-    public static List<string> themes_lookup;
-
-
     [SerializeField]
     public bool is_held;
     public bool is_worn { get; set; }
@@ -35,10 +31,6 @@ public class Clothe : MonoBehaviour
     /// </summary>
     private string theme { get; set; }
 
-    
-    //TODO REPLACE BY JOB OR STYLE
-    public string years { get; set; } //year of the shirt
-    
 
     private SpriteRenderer sprite_rend;
     private Sprite sprite;
@@ -48,9 +40,6 @@ public class Clothe : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        //initialize reference list
-       themes_lookup = new List<string> { "Industrialisation", "Prohibition", "Pin-up", "Hippie", "Disco", "Glam", "Hip-Hop", "Coureur_des_bois", "Gendarme", "Bucheron", "Clerge", "Cirque", "Construction", "Hipster", "Hipster", "Superhero", "Ballerine", "Dracula", "Mozart", "Legionnaire_Romain", "Pharaon"};
-        
         is_worn = false;
         is_held = false;
         
@@ -63,20 +52,23 @@ public class Clothe : MonoBehaviour
 
     void DetermineSprite()  ///TODO REPLACE YEAR BY THEME
     {
+
+
+
         switch (clothe_type) //depending on type choose from number of options
         {
             case CLOTHE_TYPE.HAT:
-                sprite = Resources.Load<Sprite>("Sprites/Clothes/Hats/spr_hat" + years);
+                sprite = Resources.Load<Sprite>("Sprites/Clothes/Hats/spr_hat" +"("+ theme+")");
 
                 break;
 
             case CLOTHE_TYPE.SHIRT:
-                sprite = Resources.Load<Sprite>("Sprites/Clothes/Shirts/spr_shirt" + years);
+                sprite = Resources.Load<Sprite>("Sprites/Clothes/Shirts/spr_shirt" + "(" + theme + ")");
 
                 break;
 
             case CLOTHE_TYPE.PANTS:
-                sprite = Resources.Load<Sprite>("Sprites/Clothes/Pants/spr_pants" + years);
+                sprite = Resources.Load<Sprite>("Sprites/Clothes/Pants/spr_pants" + "(" + theme + ")");
                 break;
 
           
@@ -176,7 +168,7 @@ public class Clothe : MonoBehaviour
     /// Creates an object based on type and time period
     /// </summary>
     /// <param name="type"></param>
-    /// <param string="year"></param>
+
     /// <returns></returns>
     public static GameObject Create(CLOTHE_TYPE type, string theme)//custom init
     {
