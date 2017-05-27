@@ -13,11 +13,11 @@ public class ClothesPoolController : MonoBehaviour
     // Use this for initialization
 	void Start ()
     {
-        CreatePool();
+        //CreatePool();
 	}
 
 
-    void CreatePool()
+    public void CreatePool()
     {
         for (int i = 0; i < clothes_pool_size + 1; i++)
         {
@@ -58,6 +58,27 @@ public class ClothesPoolController : MonoBehaviour
             
 
             gobj.transform.SetParent(this.transform);//set as parent
+
+        }
+
+    }
+
+    /// <summary>
+    /// Removes all the childs which are not worn
+    /// </summary>
+    public void RemoveNotWorn()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            GameObject child = transform.GetChild(i).gameObject;
+
+            Clothe clothe = child.GetComponent<Clothe>();
+
+            if (!clothe.is_worn)
+            {
+                Destroy(child);
+                
+            }
 
         }
 

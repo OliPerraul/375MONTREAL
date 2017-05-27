@@ -42,12 +42,15 @@ public class Cursor : MonoBehaviour
     {
 
         //get character reference
-        character = PlayersController.players[number - 1].character;
+        //character = PlayersController.players[number - 1].character;
 
         if (SceneManager.GetActiveScene().name == "gameplay")
         {
             sprite_rend = GetComponent<SpriteRenderer>();
             sprite_rend.color = PlayersController.player_colors[number - 1];
+
+            //get character reference
+            character = PlayersController.players[number - 1].character;
         }
 
        
