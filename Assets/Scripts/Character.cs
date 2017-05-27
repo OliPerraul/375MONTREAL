@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Character : MonoBehaviour {
 
+
+    public int number { get; set; }
+    
     public bool receiving { get; set; }
     
     private Vector3 curr_scale = new Vector3(1,1,1);
@@ -15,6 +18,10 @@ public class Character : MonoBehaviour {
     [SerializeField]
     private float max_scale;
 
+    private SpriteRenderer sprite_rend;
+    
+
+
     //contains the clothes
     private Dictionary<Clothe.CLOTHE_TYPE, Clothe> clothes;
     
@@ -22,13 +29,23 @@ public class Character : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-		clothes = new Dictionary<Clothe.CLOTHE_TYPE, Clothe>();
+        sprite_rend = GetComponent<SpriteRenderer>();
+        sprite_rend.color = PlayersController.player_colors[number - 1];
 
+
+        clothes = new Dictionary<Clothe.CLOTHE_TYPE, Clothe>();
+
+       
     }
+
+   
+
+
 	
 	// Update is called once per frame
 	void Update ()
     {
+       
         DetermineScale();
 
     }

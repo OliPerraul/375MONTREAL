@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Cursor : MonoBehaviour
 {
+    //associated player number
+    public int number { get; set; }
+        
+    
     //character associated with given cursor
     [SerializeField]
     private Character character;
@@ -31,13 +35,15 @@ public class Cursor : MonoBehaviour
 
     private Clothe clothe_held;
 
-
+    private SpriteRenderer sprite_rend;
 
     // Use this for initialization
     void Start ()
     {
-        	
-	}
+       // sprite_rend = GetComponent<SpriteRenderer>();
+       // sprite_rend.color = PlayersController.player_colors[number - 1];
+
+     }
 	
 	// Update is called once per frame
 	void Update ()
@@ -102,6 +108,7 @@ public class Cursor : MonoBehaviour
             }
            
         }
+
         
     }
 

@@ -78,12 +78,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Classes\MasterControlProgram.cs" />
     <Compile Include="Assets\Scripts\Character.cs" />
     <Compile Include="Assets\Scripts\Clothe.cs" />
     <Compile Include="Assets\Scripts\Controller\ClothesPoolController.cs" />
+    <Compile Include="Assets\Scripts\Controller\PlayersController.cs" />
     <Compile Include="Assets\Scripts\Cursor.cs" />
     <Compile Include="Assets\Scripts\DeadzoneCamera.cs" />
+    <Compile Include="Assets\Scripts\MenuButton.cs" />
     <Compile Include="Assets\Scripts\PerfectPixel.cs" />
+    <Compile Include="Assets\Scripts\Player.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

@@ -46,8 +46,6 @@ public class Clothe : MonoBehaviour
 
     void DetermineSprite()
     {
-        Debug.Log(clothe_type);
-
         switch (clothe_type) //depending on type choose from number of options
         {
             case CLOTHE_TYPE.HAT:
@@ -89,9 +87,7 @@ public class Clothe : MonoBehaviour
         }
         else//if not worn
         {
-
-            Debug.Log("happy");
-            Movement();//apply movement
+             Movement();//apply movement
         }
 
         
