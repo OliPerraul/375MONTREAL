@@ -50,9 +50,6 @@ public class RoundsController : MonoBehaviour
     private Text timer_UI;
 
     [SerializeField]
-    private Text years_UI;
-
-    [SerializeField]
     private Text hint_UI;
 
 

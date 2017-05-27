@@ -24,14 +24,15 @@ public class ClothesPoolController : MonoBehaviour
     public void CreatePool()
     {
         //creates a copy of the lookup theme list
-        List<string> themes_list = CloneList<string>(Clothe.themes_lookup);
+        List<string> themes_list = CloneList<string>(MasterControlProgram.themes_lookup);
+
+        Debug.Log(themes_list.Count);
         
         for (int i = 0; i < clothes_pool_size + 1; i++)
         {
-            string theme = themes_list[Random.Range(0,themes_list.Count)];//find item in the list
-            themes_list.RemoveAt(Random.Range(0, themes_list.Count));//remove theme from list
-
-
+            string theme = themes_list[Random.Range(0,themes_list.Count-1)];//find item in the list
+            //themes_list.RemoveAt(Random.Range(0, themes_list.Count));//remove theme from list
+                        
             GameObject gobj = null;
 
             if (isBetween(i, 0, clothes_pool_size / 3))
@@ -44,7 +45,6 @@ public class ClothesPoolController : MonoBehaviour
                 gobj = Clothe.Create(Clothe.CLOTHE_TYPE.PANTS, theme);
            
        
-
             gobj.transform.position = findPosition();
             
 
@@ -114,8 +114,7 @@ public class ClothesPoolController : MonoBehaviour
         return pos;
     }
 
-
-
+    
 
     // Update is called once per frame
     void Update ()
