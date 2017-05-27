@@ -29,6 +29,8 @@ public class Character : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        transform.lossyScale.Set(1,1,1);
+
         sprite_rend = GetComponent<SpriteRenderer>();
         sprite_rend.color = PlayersController.player_colors[number - 1];
 
@@ -37,10 +39,7 @@ public class Character : MonoBehaviour {
 
        
     }
-
-   
-
-
+    
 	
 	// Update is called once per frame
 	void Update ()
@@ -53,7 +52,7 @@ public class Character : MonoBehaviour {
     void DetermineScale()
     {
         curr_scale = Vector3.Lerp(curr_scale, target_scale, scale_rate);
-        transform.localScale = curr_scale;
+        transform.lossyScale.Set(curr_scale.x,curr_scale.y,curr_scale.z);
     }
     
     // Update is called once per frame
@@ -111,35 +110,24 @@ public class Character : MonoBehaviour {
         else //else add clothe normally
         {
             clothes.Add(clothe_type, clothe);//add new clothe
-
+           
         }
-
         
-
-
         //determine position on the character
         switch (clothe_type)
         {
             case Clothe.CLOTHE_TYPE.HAT:
-                clothe.transform.position = transform.position + new Vector3(0, 2, 0);
-                break;
-            case Clothe.CLOTHE_TYPE.SHIRT:
                 clothe.transform.position = transform.position;
                 break;
-            case Clothe.CLOTHE_TYPE.PANTS:
-                clothe.transform.position = transform.position + new Vector3(0, -2, 0);
+            case Clothe.CLOTHE_TYPE.SHIRT:
+                clothe.transform.position = transform.position;//; +new Vector3(-.03f,-.155f,0);
                 break;
-       
+            case Clothe.CLOTHE_TYPE.PANTS:
+                clothe.transform.position = transform.position;// + new Vector3(-.03f, -.255f, 0);
+                break;
+
 
         }
-
-        
-
-    }
-
-
-    void WearClothe(Clothe clothe)
-    {
 
 
 

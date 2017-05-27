@@ -77,7 +77,11 @@ public class Cursor : MonoBehaviour
 
     void PlayerInputs()
     {
-		target_x_speed = Input.GetAxis(rightStick);
+        
+
+        Debug.Log(speed);
+
+        target_x_speed = Input.GetAxis(rightStick);
 		target_y_speed = Input.GetAxis(leftStick);
 
 		A_pressed = Input.GetButtonDown(jumpButton);
@@ -92,9 +96,28 @@ public class Cursor : MonoBehaviour
 
         speed = new Vector3(curr_x_speed, curr_y_speed, 0f) * move_rate;
 
-        
+        //speed check
+        float speed_check_x = Input.GetAxisRaw(rightStick);
+        float speed_check_y = Input.GetAxisRaw(leftStick);
+
+        if (speed_check_x == 0)
+            speed.x = 0;
+
+        if (speed_check_y == 0)
+            speed.y = 0;
+
+        speed_check_x = Input.GetAxis(rightStick);
+        speed_check_y = Input.GetAxis(leftStick);
+
+
+        if (speed_check_x < 0.15f && speed_check_x> -0.15f)
+            speed.x = 0;
+
+        if (speed_check_x < 0.15f && speed_check_x> -0.15f)
+            speed.y = 0;
+
         //adding clothes on character or let go clothe
-		 if (A_released)
+        if (A_released)
         {
             if (clothe_held != null)//if holding a clothe
             {
@@ -121,8 +144,11 @@ public class Cursor : MonoBehaviour
             Clothe clothe = other.GetComponent<Clothe>();
 			if ((A_held) && (!clothe.is_worn))
             {
-                clothe.is_held = true;
                 clothe_held = clothe;
+
+                if((clothe_held == clothe)||clothe_held == null)
+                clothe.is_held = true;
+                
 				isHolding = true;
 
                 clothe.curr_speed = speed;
@@ -133,23 +159,23 @@ public class Cursor : MonoBehaviour
     }
 
 
-    // Update is called once per frame
-    void OnTriggerExit2D(Collider2D other)
-    {
+   // // Update is called once per frame
+   // void OnTriggerExit2D(Collider2D other)
+   // {
 		
-        if (other.gameObject.tag == "Clothe")
-        {
+   //     if (other.gameObject.tag == "Clothe")
+   //     {
 			
-			//Debug.Log ("Exit is Holding"+isHolding);
+			////Debug.Log ("Exit is Holding"+isHolding);
 
-            Clothe clothe = other.GetComponent<Clothe>();
-                  clothe.is_held = false;
-			canHold = true;
+   //         Clothe clothe = other.GetComponent<Clothe>();
+   //               clothe.is_held = false;
+			//canHold = true;
 
            
-        }
+   //     }
 
-    }
+   // }
 
 
 }

@@ -7,7 +7,6 @@ using UnityEngine;
 public class ClothesPoolController : MonoBehaviour
 {
         
-
     [SerializeField]
     private int clothes_pool_size = 10;
 
@@ -25,9 +24,7 @@ public class ClothesPoolController : MonoBehaviour
     {
         //creates a copy of the lookup theme list
         List<string> themes_list = CloneList<string>(MasterControlProgram.themes_lookup);
-
-        Debug.Log(themes_list.Count);
-        
+                
         for (int i = 0; i < clothes_pool_size + 1; i++)
         {
             string theme = themes_list[Random.Range(0,themes_list.Count-1)];//find item in the list

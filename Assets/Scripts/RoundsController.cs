@@ -47,10 +47,10 @@ public class RoundsController : MonoBehaviour
     #region UI
 
     [SerializeField]
-    private Text timer_UI;
+    private TextMesh timer_UI;
 
     [SerializeField]
-    private Text hint_UI;
+    private TextMesh hint_UI;
 
 
     [SerializeField]
@@ -68,6 +68,7 @@ public class RoundsController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+               
         #region before_game
 
         if (!in_game)
@@ -98,8 +99,7 @@ public class RoundsController : MonoBehaviour
         }
 
         #endregion
-
-        
+                
         #region in_game
         if (in_game)
         {
@@ -122,6 +122,13 @@ public class RoundsController : MonoBehaviour
                         //reset timer to random
                         timer_rounds = Random.Range(min_round_time, max_round_time);
 
+                        //////annouce themes//////
+
+                        //job
+                        announced_job = MasterControlProgram.job_lookup[Random.Range(0, MasterControlProgram.job_lookup.Count-1)];
+                        //style
+                        announced_style = MasterControlProgram.style_lookup[Random.Range(0, MasterControlProgram.style_lookup.Count - 1)];
+                        
                         clothePoolController.CreatePool();
                     }
                  }
@@ -156,8 +163,7 @@ public class RoundsController : MonoBehaviour
 
         }
         #endregion
-
-
+        
 
         //UPDATE UI GRAPHIC
         UpdateUI();
@@ -177,20 +183,31 @@ public class RoundsController : MonoBehaviour
 
                 int seconds = 0;
 
-                if (in_round)
-                {
-                    sixty = 60;
-                    minute_count = (int)timer_rounds / sixty;
+            
+                  sixty = 60;
+                 minute_count = (int)timer_rounds / sixty;
 
-                    seconds = Mathf.RoundToInt(timer_rounds % 60) - 1;
-
-                }
+                 seconds = Mathf.RoundToInt(timer_rounds % 60) - 1;
+                
 
                 timer_UI.text = minute_count.ToString() + ":" + seconds.ToString();
+
+                
+                //update hint 
+                if (announced_style == "coureurdesbois")
+                { hint_UI.text = "Un party de " + announced_job + "s à l'époque des" + announced_style + "."; }
+                else
+                    hint_UI.text = "Un party de " + announced_job + "s à l'époque de la " + announced_style + ".";
+
+
             }
             else
             {
                 timer_UI.text = ("INTERMISSION");
+
+                hint_UI.text = ("");
+
+
             }
 
 

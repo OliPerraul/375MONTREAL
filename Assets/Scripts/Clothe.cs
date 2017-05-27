@@ -15,6 +15,13 @@ public class Clothe : MonoBehaviour
     private float deccel_rate = 0.3f;
     #endregion
 
+    private BoxCollider2D boxcol;
+
+    public Vector3 start_hitbox_offset = new Vector3(0,-0.1f);
+    public Vector3 start_hitbox_size = new Vector3(5.5f, 8.5f);
+
+    public Vector3 alternate_hitbox_offset;
+    public Vector3 alternate_hitbox_size;
 
     public enum CLOTHE_TYPE
     {
@@ -40,14 +47,51 @@ public class Clothe : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+         boxcol = GetComponent<BoxCollider2D>(); //box collider
+
         is_worn = false;
         is_held = false;
         
         sprite_rend = GetComponent<SpriteRenderer>();//access sprite renderer
 
+        DetermineHitbox();
         DetermineSprite();
         
 	}
+
+    // Use this for initialization
+    void DetermineHitbox()
+    {
+                //save start hitbox preference
+        
+
+        switch (clothe_type)
+        {
+            case CLOTHE_TYPE.HAT:
+                alternate_hitbox_offset = new Vector2(-.5f,1.4f);
+                alternate_hitbox_size = new Vector2(1.5f, 1.5f);
+
+                break;
+
+            case CLOTHE_TYPE.SHIRT:
+                alternate_hitbox_offset = new Vector2(-.3f, -1.8f);
+                alternate_hitbox_size = new Vector2(1.5f, 1.5f);
+
+                break;
+
+            case CLOTHE_TYPE.PANTS:
+                alternate_hitbox_offset = new Vector2(-.5f, -3f);
+                alternate_hitbox_size = new Vector2(1.5f, 1.5f);
+
+                break;
+
+
+        }
+
+        boxcol.offset = alternate_hitbox_offset;
+        boxcol.size = alternate_hitbox_size;
+
+    }
 
 
     void DetermineSprite()  ///TODO REPLACE YEAR BY THEME
@@ -83,15 +127,18 @@ public class Clothe : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        
+       // transform.localScale.Set(1.5f, 1.5f, 1.5f);
+
         ///////IF WORN
         if (is_worn)
         {
-            //pulse only if correct player hovers over it
+            
+
         }
         else//if not worn
         {
-             Movement();//apply movement
+            
+            Movement();//apply movement
         }
 
         
