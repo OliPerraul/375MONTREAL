@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Cursor : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class Cursor : MonoBehaviour
         
     
     //character associated with given cursor
-    [SerializeField]
     private Character character;
     
     [SerializeField]
@@ -40,9 +40,18 @@ public class Cursor : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-       // sprite_rend = GetComponent<SpriteRenderer>();
-       // sprite_rend.color = PlayersController.player_colors[number - 1];
 
+        //get character reference
+        character = PlayersController.players[number - 1].character;
+
+        if (SceneManager.GetActiveScene().name == "gameplay")
+        {
+            sprite_rend = GetComponent<SpriteRenderer>();
+            sprite_rend.color = PlayersController.player_colors[number - 1];
+        }
+
+       
+        
      }
 	
 	// Update is called once per frame
@@ -108,9 +117,21 @@ public class Cursor : MonoBehaviour
             }
            
         }
-
-        
+                
     }
 
-  
+
+    // Update is called once per frame
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Clothe")
+        {
+            Clothe clothe = other.GetComponent<Clothe>();
+                  clothe.is_held = false;
+           
+        }
+
+    }
+
+
 }

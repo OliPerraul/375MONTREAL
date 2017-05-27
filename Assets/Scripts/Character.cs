@@ -90,13 +90,34 @@ public class Character : MonoBehaviour {
 
     public void AddClothe(Clothe clothe) 
     {
+       
         clothe.gameObject.transform.SetParent(transform); //set as child
-
         clothe.is_worn = true;
 
         Clothe.CLOTHE_TYPE clothe_type = clothe.clothe_type; //add to dictionary
-        clothes.Add(clothe_type, clothe);
 
+        Clothe clothe_out; //ref to clothe popped out
+        if (clothes.TryGetValue(clothe_type, out clothe_out)) // if clothe type already exist swap and pop  out old one
+        {
+            clothes.Remove(clothe_type); //remove from dictionary
+            clothes.Add(clothe_type, clothe);//add new clothe
+
+            clothe_out.is_worn = false;
+            clothe_out.transform.SetParent(null); //unparent
+
+            Vector3 reject_speed = new Vector3(Random.Range(1, 2), Random.Range(1, 2), 0); //determine reject speed
+            clothe_out.curr_speed = reject_speed;
+        }
+        else //else add clothe normally
+        {
+            clothes.Add(clothe_type, clothe);//add new clothe
+
+        }
+
+        
+
+
+        //determine position on the character
         switch (clothe_type)
         {
             case Clothe.CLOTHE_TYPE.HAT:

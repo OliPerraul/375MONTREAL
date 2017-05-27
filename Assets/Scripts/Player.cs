@@ -8,17 +8,18 @@ public class Player : MonoBehaviour
     //associated player number
     public int number { get; set; }
 
-    
+    public Cursor cursor { get; set; }
+    public Character character { get; set; }
+
 
     // Use this for initialization
     void Start ()
     {
+        InitCharacters(); //init character then cursor
+
         InitCursors();
 
-        InitCharacters();
-
-
-	}
+    }
 
 
     void InitCharacters()
@@ -30,7 +31,9 @@ public class Player : MonoBehaviour
        charObj.name = "Character" + number.ToString();
        
      
-        Character character = charObj.GetComponent<Character>(); //access main component
+        Character _character = charObj.GetComponent<Character>(); //access main component
+
+        this.character = _character; //set given player
 
         character.number = number;
 
@@ -48,8 +51,9 @@ public class Player : MonoBehaviour
 
         cursObj.name = "Cursor" + number.ToString();
 
+        Cursor _cursor = cursObj.GetComponent<Cursor>(); //access main component
 
-        Cursor cursor = cursObj.GetComponent<Cursor>(); //access main component
+        this.cursor = _cursor; //set given player
 
         cursor.number = number;
 
@@ -83,7 +87,7 @@ public class Player : MonoBehaviour
                 y_pos = (cam.pixelHeight / 4);
 
                 pos = cam.ScreenToWorldPoint(new Vector3(x_pos, y_pos, 0));
-                pos.z = 0;//kill z to appear on plane
+                
 
                 break;
 
@@ -112,7 +116,11 @@ public class Player : MonoBehaviour
                 
         }
 
+        pos.z = 0;//kill z to appear on plane
+
         return pos;
+
+       
 
     }
 

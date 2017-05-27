@@ -96,8 +96,8 @@ public class PlayersController : MonoBehaviour
 
 
                 //fill in static array of players
-                PlayersController.players[1] = player1;
-                PlayersController.players[2] = player2;
+                PlayersController.players[0] = player1;
+                PlayersController.players[1] = player2;
 
                 break;
 
@@ -126,9 +126,9 @@ public class PlayersController : MonoBehaviour
 
 
                 //fill in static array of players
-                PlayersController.players[1] = player1;
-                PlayersController.players[2] = player2;
-                PlayersController.players[3] = player3;
+                PlayersController.players[0] = player1;
+                PlayersController.players[1] = player2;
+                PlayersController.players[2] = player3;
                 break;
 
             case 4:

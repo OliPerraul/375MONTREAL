@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Clothe : MonoBehaviour
 {
-
-    public bool is_held { get; set; }
+    [SerializeField]
+    public bool is_held;
     public bool is_worn { get; set; }
 
     #region Movement
-    public Vector3 curr_speed { get; set; }
-    public Vector3 target_speed { get; set; }
+    public Vector3 curr_speed;
+    public Vector3 target_speed;
     [SerializeField]
     private float deccel_rate = 0.3f;
     #endregion
@@ -103,7 +103,60 @@ public class Clothe : MonoBehaviour
 
         curr_speed = Vector3.Lerp(curr_speed, target_speed, deccel_rate);
         transform.position += curr_speed;
+
+
+        BounceOnScreenEdge();
+
+
     }
+
+
+    void BounceOnScreenEdge()
+    {
+
+        Camera cam = Camera.main;
+        Vector3 pos = Vector3.zero;
+
+        
+        Vector3 pos_bottom_left = cam.ScreenToWorldPoint(new Vector3(0, 0, 0));
+        Vector3 pos_top_right = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, cam.pixelHeight, 0));
+
+        if ((transform.position.x > pos_top_right.x) || (transform.position.x < pos_bottom_left.x))
+        {
+            is_held = false; //prevent cursor dragging item outside
+
+            curr_speed.x = -curr_speed.x;
+            target_speed.x = -target_speed.x;
+
+        }
+        
+        if ((transform.position.y > pos_top_right.y) || (transform.position.y < pos_bottom_left.y))
+        {
+
+            is_held = false; //prevent cursor dragging item outside
+
+            curr_speed.y = -curr_speed.y;
+            target_speed.y = -target_speed.y;
+
+        }
+
+        
+
+    }
+
+    // Update is called once per frame
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Cursor")
+        {
+            is_held = false; //not helf if cursor not over
+
+        }
+
+
+    }
+
+
 
 
     /// <summary>
