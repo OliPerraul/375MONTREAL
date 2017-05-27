@@ -28,10 +28,16 @@ public class Cursor : MonoBehaviour
 
     private Vector3 speed;
 
+	public string rightStick = "Horizontal_P1";
+	public string leftStick = "Vertical_P1";
+	public string jumpButton = "Jump_P1";
   
     private bool A_pressed;
     private bool A_held;
     private bool A_released;
+
+	public bool isHolding = false;
+	public bool canHold = true;
 
     private Clothe clothe_held;
 
@@ -41,16 +47,15 @@ public class Cursor : MonoBehaviour
     void Start ()
     {
 
-        //get character reference
-        //character = PlayersController.players[number - 1].character;
+        
 
         if (SceneManager.GetActiveScene().name == "gameplay")
         {
             sprite_rend = GetComponent<SpriteRenderer>();
             sprite_rend.color = PlayersController.player_colors[number - 1];
 
-            //get character reference
-            character = PlayersController.players[number - 1].character;
+           // get character reference
+             character = PlayersController.players[number - 1].character;
         }
 
        
@@ -65,19 +70,19 @@ public class Cursor : MonoBehaviour
 
         //update cursor pos
         transform.position += speed;
-             
+		   
     }
     
      
 
     void PlayerInputs()
     {
-        target_x_speed = Input.GetAxis("Horizontal");
-        target_y_speed = Input.GetAxis("Vertical");
+		target_x_speed = Input.GetAxis(rightStick);
+		target_y_speed = Input.GetAxis(leftStick);
 
-        A_pressed = Input.GetKeyDown("joystick button 0");
-        A_held = Input.GetKey("joystick button 0");
-        A_released = Input.GetKeyUp("joystick button 0");
+		A_pressed = Input.GetButtonDown(jumpButton);
+		A_held = Input.GetButton(jumpButton);
+		A_released = Input.GetButtonUp(jumpButton);
 
 
 
@@ -89,7 +94,7 @@ public class Cursor : MonoBehaviour
 
         
         //adding clothes on character or let go clothe
-        if (A_released)
+		 if (A_released)
         {
             if (clothe_held != null)//if holding a clothe
             {
@@ -110,14 +115,18 @@ public class Cursor : MonoBehaviour
     {
         if (other.gameObject.tag == "Clothe")
         {
+			
+			///Debug.Log ("Enter is Holding"+isHolding);
+
             Clothe clothe = other.GetComponent<Clothe>();
-            if ((A_held) && !clothe.is_worn)
+			if ((A_held) && (!clothe.is_worn))
             {
                 clothe.is_held = true;
                 clothe_held = clothe;
+				isHolding = true;
 
                 clothe.curr_speed = speed;
-            }
+			}
            
         }
                 
@@ -127,10 +136,16 @@ public class Cursor : MonoBehaviour
     // Update is called once per frame
     void OnTriggerExit2D(Collider2D other)
     {
+		
         if (other.gameObject.tag == "Clothe")
         {
+			
+			//Debug.Log ("Exit is Holding"+isHolding);
+
             Clothe clothe = other.GetComponent<Clothe>();
                   clothe.is_held = false;
+			canHold = true;
+
            
         }
 

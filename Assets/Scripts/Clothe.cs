@@ -52,8 +52,7 @@ public class Clothe : MonoBehaviour
 
     void DetermineSprite()  ///TODO REPLACE YEAR BY THEME
     {
-
-
+        
 
         switch (clothe_type) //depending on type choose from number of options
         {
@@ -109,10 +108,8 @@ public class Clothe : MonoBehaviour
         curr_speed = Vector3.Lerp(curr_speed, target_speed, deccel_rate);
         transform.position += curr_speed;
 
-
         BounceOnScreenEdge();
-
-
+        
     }
 
 
