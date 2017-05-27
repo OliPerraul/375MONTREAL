@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/sc_clothes_interaction.unity
+- path: Assets/Scenes/interaction_clothes.unity
   isLoaded: 1
   isActive: 1
