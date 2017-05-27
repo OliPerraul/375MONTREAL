@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Clothe : MonoBehaviour
 {
+    //reference of all the themes
+    public static List<string> themes_lookup;
+
+
     [SerializeField]
     public bool is_held;
     public bool is_worn { get; set; }
@@ -15,36 +19,49 @@ public class Clothe : MonoBehaviour
     private float deccel_rate = 0.3f;
     #endregion
 
-    
+
     public enum CLOTHE_TYPE
     {
-        HAT, SHIRT, PANTS, SHOES
+        HAT, SHIRT, PANTS
 
     }
+
+    //clothes determinant
+
     public CLOTHE_TYPE clothe_type { get; set; }
 
-    public string years { get; set; } //year of the shirt
+    /// <summary>
+    /// Job or style
+    /// </summary>
+    private string theme { get; set; }
 
+    
+    //TODO REPLACE BY JOB OR STYLE
+    public string years { get; set; } //year of the shirt
+    
 
     private SpriteRenderer sprite_rend;
     private Sprite sprite;
 
+    
 
     // Use this for initialization
     void Start ()
     {
+        //initialize reference list
+       themes_lookup = new List<string> { "Industrialisation", "Prohibition", "Pin-up", "Hippie", "Disco", "Glam", "Hip-Hop", "Coureur_des_bois", "Gendarme", "Bucheron", "Clerge", "Cirque", "Construction", "Hipster", "Hipster", "Superhero", "Ballerine", "Dracula", "Mozart", "Legionnaire_Romain", "Pharaon"};
+        
         is_worn = false;
         is_held = false;
-
-
+        
         sprite_rend = GetComponent<SpriteRenderer>();//access sprite renderer
 
         DetermineSprite();
         
-
 	}
 
-    void DetermineSprite()
+
+    void DetermineSprite()  ///TODO REPLACE YEAR BY THEME
     {
         switch (clothe_type) //depending on type choose from number of options
         {
@@ -62,11 +79,7 @@ public class Clothe : MonoBehaviour
                 sprite = Resources.Load<Sprite>("Sprites/Clothes/Pants/spr_pants" + years);
                 break;
 
-            case CLOTHE_TYPE.SHOES:
-                sprite = Resources.Load<Sprite>("Sprites/Clothes/Shoes/spr_shoes" + years);
-
-                break;
-
+          
         }
 
        // Debug.Log(sprite);
@@ -165,7 +178,7 @@ public class Clothe : MonoBehaviour
     /// <param name="type"></param>
     /// <param string="year"></param>
     /// <returns></returns>
-    public static GameObject Create(CLOTHE_TYPE type, string years)//custom init
+    public static GameObject Create(CLOTHE_TYPE type, string theme)//custom init
     {
         //find container
         GameObject scriptedEntityController = GameObject.Find("ScriptedEntityController");
@@ -180,8 +193,8 @@ public class Clothe : MonoBehaviour
 
 
         clothe.clothe_type = type; //set type
-        clothe.years = years;  //set years
-        
+        clothe.theme = theme; //set theme
+                
 
         return newObject;
 

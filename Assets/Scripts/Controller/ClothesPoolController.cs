@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 public class ClothesPoolController : MonoBehaviour
 {
+        
+
     [SerializeField]
-    private int clothes_pool_size = 20;
+    private int clothes_pool_size = 10;
 
     [SerializeField]
     private int spread_value = 4;
@@ -19,40 +23,27 @@ public class ClothesPoolController : MonoBehaviour
 
     public void CreatePool()
     {
+        //creates a copy of the lookup theme list
+        List<string> themes_list = CloneList<string>(Clothe.themes_lookup);
+        
         for (int i = 0; i < clothes_pool_size + 1; i++)
         {
-            //determine year
-            int years_val = Random.Range(0, 375);
-            string years = "";
+            string theme = themes_list[Random.Range(0,themes_list.Count)];//find item in the list
+            themes_list.RemoveAt(Random.Range(0, themes_list.Count));//remove theme from list
 
-            if (isBetween(years_val, 0, 100))
-                years = "(0-100)";
 
-            if (isBetween(years_val, 100, 200))
-                years = "(100-200)";
-
-            if (isBetween(years_val, 200, 300))
-                years = "(200-300)";
-
-            if (isBetween(years_val, 300, 376))
-                years = "(300-375)";
-
-           // Debug.Log(years);
-
-            
             GameObject gobj = null;
 
-            if (isBetween(i, 0, clothes_pool_size / 4))
-                gobj = Clothe.Create(Clothe.CLOTHE_TYPE.HAT, years);
+            if (isBetween(i, 0, clothes_pool_size / 3))
+                gobj = Clothe.Create(Clothe.CLOTHE_TYPE.HAT, theme);
             else
-            if (isBetween(i, clothes_pool_size / 4, clothes_pool_size / 2))
-                gobj = Clothe.Create(Clothe.CLOTHE_TYPE.SHIRT, years);
+            if (isBetween(i, clothes_pool_size/3, (clothes_pool_size/3)*2))
+                gobj = Clothe.Create(Clothe.CLOTHE_TYPE.SHIRT, theme);
             else
-            if (isBetween(i, clothes_pool_size / 2, (clothes_pool_size / 4) * 3))
-                gobj = Clothe.Create(Clothe.CLOTHE_TYPE.PANTS, years);
-            else
-            if (isBetween(i, ((clothes_pool_size / 4) * 3), clothes_pool_size + 1))
-                gobj = Clothe.Create(Clothe.CLOTHE_TYPE.SHOES, years);
+            if (isBetween(i, (clothes_pool_size / 3) * 2, clothes_pool_size+1))
+                gobj = Clothe.Create(Clothe.CLOTHE_TYPE.PANTS, theme);
+           
+       
 
             gobj.transform.position = findPosition();
             
@@ -61,6 +52,21 @@ public class ClothesPoolController : MonoBehaviour
 
         }
 
+    }
+
+    /// <summary>
+    /// HELPER METHOD
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="oldList"></param>
+    /// <returns></returns>
+    public static List<T> CloneList<T>(List<T> oldList)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        MemoryStream stream = new MemoryStream();
+        formatter.Serialize(stream, oldList);
+        stream.Position = 0;
+        return (List<T>)formatter.Deserialize(stream);
     }
 
     /// <summary>

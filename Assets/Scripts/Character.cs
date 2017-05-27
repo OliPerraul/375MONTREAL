@@ -129,9 +129,7 @@ public class Character : MonoBehaviour {
             case Clothe.CLOTHE_TYPE.PANTS:
                 clothe.transform.position = transform.position + new Vector3(0, -2, 0);
                 break;
-            case Clothe.CLOTHE_TYPE.SHOES:
-                clothe.transform.position = transform.position + new Vector3(0, -4, 0);
-                break;
+       
 
         }
 
