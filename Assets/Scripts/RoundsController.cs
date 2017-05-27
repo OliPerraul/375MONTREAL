@@ -5,7 +5,13 @@ using UnityEngine.UI;
 
 public class RoundsController : MonoBehaviour
 {
-   // [SerializeField]//TODO REMOVE
+    string announced_style = "";
+
+    string announced_job = "";
+    
+
+    #region Timer
+    // [SerializeField]//TODO REMOVE
     float round_time = 120;
     ///
 
@@ -25,23 +31,20 @@ public class RoundsController : MonoBehaviour
 
     //current time of the round
     float timer_rounds = 60f;
-
-
-
+    
     float between_rounds_timer = 20f;
-
-
+    #endregion
+    
+    #region Gamestates
     //bools
-    [SerializeField]
     bool in_game = false;
 
-    [SerializeField]
     bool in_round = false;
-    
-    [SerializeField]
+
     bool init_round = false;
+    #endregion
 
-
+    #region UI
 
     [SerializeField]
     private Text timer_UI;
@@ -55,18 +58,14 @@ public class RoundsController : MonoBehaviour
 
     [SerializeField]
     private ClothesPoolController clothePoolController;
-
-    private bool FLAG = false;
-
-
+    #endregion
+    
 
     // Use this for initialization
     void Start ()
     {
         between_rounds_timer = 2f; //set interval between first round to be short
-
-
-
+        
     }
 	
 	// Update is called once per frame
@@ -103,9 +102,7 @@ public class RoundsController : MonoBehaviour
 
         #endregion
 
-
-
-
+        
         #region in_game
         if (in_game)
         {
@@ -146,8 +143,6 @@ public class RoundsController : MonoBehaviour
                 {
                     if (in_round)
                     {
-                        FLAG = true;
-
                         init_round = false;
                         in_round = false;
 
