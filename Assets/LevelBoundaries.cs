@@ -14,6 +14,13 @@ public class LevelBoundaries : MonoBehaviour
     private Vector3 cameraPos;
 
 
+    [SerializeField]
+    private float xoffset;
+    
+    [SerializeField]
+    private float yoffset;
+
+
     // Use this for initialization
     void Start()
     {
@@ -37,10 +44,24 @@ public class LevelBoundaries : MonoBehaviour
         leftCollider.name = "LeftCollider";
 
         //Add the colliders
-        topCollider.gameObject.AddComponent<BoxCollider2D>();
-        bottomCollider.gameObject.AddComponent<BoxCollider2D>();
-        rightCollider.gameObject.AddComponent<BoxCollider2D>();
-        leftCollider.gameObject.AddComponent<BoxCollider2D>();
+        Rigidbody2D rg = topCollider.gameObject.AddComponent<Rigidbody2D>();
+        rg.isKinematic = true;
+        rg =bottomCollider.gameObject.AddComponent<Rigidbody2D>();
+        rg.isKinematic = true;
+        rg =rightCollider.gameObject.AddComponent<Rigidbody2D>();
+        rg.isKinematic = true;
+        rg = leftCollider.gameObject.AddComponent<Rigidbody2D>();
+        rg.isKinematic = true;
+
+
+        BoxCollider2D bc = topCollider.gameObject.AddComponent<BoxCollider2D>();
+        bc.isTrigger = true;
+        bc = bottomCollider.gameObject.AddComponent<BoxCollider2D>();
+        bc.isTrigger = true;
+        bc = rightCollider.gameObject.AddComponent<BoxCollider2D>();
+        bc.isTrigger = true;
+        bc = leftCollider.gameObject.AddComponent<BoxCollider2D>();
+        bc.isTrigger = true;
 
         //Make them the child of whatever object this script is on, preferably on the Camera so the objects move with the camera without extra scripting
         topCollider.parent = transform;
@@ -53,14 +74,17 @@ public class LevelBoundaries : MonoBehaviour
         screenSize.x = Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0))) * 0.5f;
         screenSize.y = Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height))) * 0.5f;
 
+       //  xoffset = 0;
+        // yoffset = 0;
+
         //Change our scale and positions to match the edges of the screen...   
-        rightCollider.localScale = new Vector3(colDepth, screenSize.y * 2, colDepth);
-        rightCollider.position = new Vector3(cameraPos.x + screenSize.x + (rightCollider.localScale.x * 0.5f), cameraPos.y, zPosition);
-        leftCollider.localScale = new Vector3(colDepth, screenSize.y * 2, colDepth);
-        leftCollider.position = new Vector3(cameraPos.x - screenSize.x - (leftCollider.localScale.x * 0.5f), cameraPos.y, zPosition);
-        topCollider.localScale = new Vector3(screenSize.x * 2, colDepth, colDepth);
-        topCollider.position = new Vector3(cameraPos.x, cameraPos.y + screenSize.y + (topCollider.localScale.y * 0.5f), zPosition);
-        bottomCollider.localScale = new Vector3(screenSize.x * 2, colDepth, colDepth);
-        bottomCollider.position = new Vector3(cameraPos.x, cameraPos.y - screenSize.y - (bottomCollider.localScale.y * 0.5f), zPosition);
+        rightCollider.localScale = new Vector3(colDepth, screenSize.y * 4, colDepth);
+        rightCollider.position = new Vector3(cameraPos.x + screenSize.x + (rightCollider.localScale.x * 0.5f)-xoffset, cameraPos.y, zPosition);
+        leftCollider.localScale = new Vector3(colDepth, screenSize.y * 4, colDepth);
+        leftCollider.position = new Vector3(cameraPos.x - screenSize.x - (leftCollider.localScale.x * 0.5f)+xoffset, cameraPos.y, zPosition);
+        topCollider.localScale = new Vector3(screenSize.x * 4, colDepth, colDepth);
+        topCollider.position = new Vector3(cameraPos.x, cameraPos.y + screenSize.y + (topCollider.localScale.y * 0.5f)-yoffset, zPosition);
+        bottomCollider.localScale = new Vector3(screenSize.x * 4, colDepth, colDepth);
+        bottomCollider.position = new Vector3(cameraPos.x, cameraPos.y - screenSize.y - (bottomCollider.localScale.y * 0.5f), zPosition+yoffset);
     }
 }

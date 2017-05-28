@@ -73,10 +73,9 @@ public class Cursor : MonoBehaviour
     void Update ()
     {
         PlayerInputs();
-
-
+        
         //update cursor pos
-        transform.position += speed;
+        //transform.position += speed;
 
 
         //make sure always a sprite assigned
@@ -87,9 +86,29 @@ public class Cursor : MonoBehaviour
             sprite_rend.sprite = sprite;
         }
 
+
+        ///RESET IF NEEDED
+        Camera cam = Camera.main;
+
+        int right_screen = cam.pixelWidth;
+        int up_screen = cam.pixelHeight;
+
+
+        Vector3 top_right = cam.ScreenToWorldPoint(new Vector3(right_screen, up_screen, 0));
+        Vector3 bottom_left = cam.ScreenToWorldPoint(new Vector3(0,0, 0));
+
+        if (transform.position.x < bottom_left.x || transform.position.x > top_right.x)
+            ResetCursor();
+        
     }
-    
-     
+
+    void LateUpdate()
+    {
+        //update cursor pos
+        transform.position += speed;
+
+    }
+         
 
     void PlayerInputs()
     {
@@ -114,15 +133,17 @@ public class Cursor : MonoBehaviour
 
 
         //speed check
-        if (speed.magnitude > 1)
-          speed.Normalize();
+        if (speed.magnitude > max_speed)
+        {
+            speed.Normalize();
+            speed *= max_speed;
+        }
         
                         
         //set correct speed
         speed.x = speed_x;
         speed.y = speed_y;
-
-                
+                        
 
         A_pressed = Input.GetButtonDown(jumpButton);
 		A_held = Input.GetButton(jumpButton);
@@ -150,11 +171,11 @@ public class Cursor : MonoBehaviour
     // Update is called once per frame
     void OnTriggerStay2D(Collider2D other)
     {
+        //Debug.Log("Stay on Trigger: " + other.name);
+
         if (other.gameObject.tag == "Clothe")
         {
-			
-			///Debug.Log ("Enter is Holding"+isHolding);
-
+            //Check for alpha testing 
             Clothe clothe = other.GetComponent<Clothe>();
 			if ((A_held) && (!clothe.is_worn))
             {
@@ -171,66 +192,106 @@ public class Cursor : MonoBehaviour
         }
 
         //cal bounce on edge method
-        
+        BounceOnScreenEdge(other);
+
+    }
+    
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+
+        BounceOnScreenEdge(other);
+
+        //Debug.Log("Entering Trigger: " + other.name);
+
+        //cal bounce on edge method
+        //BounceOnScreenEdge(other);
+
+    }
+
+    void OnTriggerExit2D(Collider2D trigger)
+    {
+   
+        if (trigger.gameObject.tag == "Clothe")
+        {
+
+            //Debug.Log ("Exit is Holding"+isHolding);
+
+            Clothe clothe = trigger.GetComponent<Clothe>();
+            clothe.is_held = false;
+            canHold = true;
+
+
+        }
+        else
+        {
+            BounceOnScreenEdge(trigger);
+        }
+    }
+
+
+    /// <summary>
+    /// Helper method (Bounce on the edge of the screen)
+    /// </summary>
+    void BounceOnScreenEdge(Collider2D other)
+    {
+        string tag = other.gameObject.tag;
+
+        if (tag == "leftboundary" || tag == "rightboundary")
+        {
+            speed.x = -speed.x*2;
+            //update cursor pos
+            transform.position += speed;
+        }
+
+
+        if (tag == "topboundary" || tag == "bottomboundary")
+        {
+            speed.y = -speed.y*2;
+            //update cursor pos
+            transform.position += speed;
+        }
+
+    }
+
+
+    void ResetCursor()
+    {
+
+        Camera cam = Camera.main;
+
+        int x_pos = cam.pixelWidth/2;
+        int y_pos = cam.pixelHeight/2;
+
+        Vector3 pos = cam.ScreenToWorldPoint(new Vector3(x_pos, y_pos, 0));
+        pos.z = 0;//kill z value
+      
+
+        transform.position = pos;
 
     }
 
 
 
-    //void OnTriggerEnter2D(Collider2D other)
-    //{
-
-    //    //cal bounce on edge method
-    //    BounceOnScreenEdge(other);
-
-    //}
 
 
-    ///// <summary>
-    ///// Helper method (Bounce on the edge of the screen)
-    ///// </summary>
-    //void BounceOnScreenEdge(Collider2D other)
-    //{
-    //    string tag = other.gameObject.tag;
+    // Update is called once per frame
+    /* void OnTriggerExit2D(Collider2D other)
+    {
+
+        if (other.gameObject.tag == "Clothe")
+        {
+
+            //Debug.Log ("Exit is Holding"+isHolding);
+
+            Clothe clothe = other.GetComponent<Clothe>();
+            clothe.is_held = false;
+            canHold = true;
 
 
-    //    if (tag == "leftboundary" || tag == "rightboundary")
-    //    {
+        }
 
-    //        speed.x = -speed.x;
-
-    //    }
-
-
-    //    if (tag == "topboundary" || tag == "bottomboundary")
-    //    {
-    //        speed.y = -speed.y;
-    //    }
-
-    //}
-
-
-
-
-
-
-    // // Update is called once per frame
-    // void OnTriggerExit2D(Collider2D other)
-    // {
-
-    //     if (other.gameObject.tag == "Clothe")
-    //     {
-
-    ////Debug.Log ("Exit is Holding"+isHolding);
-
-    //         Clothe clothe = other.GetComponent<Clothe>();
-    //               clothe.is_held = false;
-    //canHold = true;
-
-
-    //     }
-
-    // }
+    } */
 
 
 }
