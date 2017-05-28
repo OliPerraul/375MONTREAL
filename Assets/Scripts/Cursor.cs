@@ -112,7 +112,12 @@ public class Cursor : MonoBehaviour
          else
              speed_y = Mathf.Lerp(0, max_speed, y_axis);
 
+
+        //speed check
+        if (speed.magnitude > 1)
+          speed.Normalize();
         
+                        
         //set correct speed
         speed.x = speed_x;
         speed.y = speed_y;
