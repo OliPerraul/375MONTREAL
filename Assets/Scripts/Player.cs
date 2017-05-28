@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     public Cursor cursor { get; set; }
     public Character character { get; set; }
 
-
+  
     // Use this for initialization
     void Start ()
     {
@@ -41,8 +41,7 @@ public class Player : MonoBehaviour
        
       }
 
-
-
+   
     void InitCursors()
     {
 		//Switch qui instantiate un curseur pour tout le monde
@@ -126,8 +125,8 @@ public class Player : MonoBehaviour
         int y_pos;
         Camera cam = Camera.main;
         Vector3 pos = Vector3.zero;
-       
 
+    
         switch (number)
         {
             case 1://top left

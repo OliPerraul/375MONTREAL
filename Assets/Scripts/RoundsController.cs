@@ -5,6 +5,32 @@ using UnityEngine.UI;
 
 public class RoundsController : MonoBehaviour
 {
+
+
+    //CURRENTYL DISPLAYED SCORES
+    private int displayed_score1 = 0;
+
+    private int displayed_score2 = 0;
+
+    private int displayed_score3 = 0;
+
+    private int displayed_score4 = 0;
+
+
+    
+
+    [SerializeField]
+    private float score_trans_speed = .01f;
+
+    
+    [SerializeField]
+    private int points_annouced_theme = 15;
+
+    [SerializeField]
+    private int points_fullset = 50;
+
+
+
     string announced_style = "";
 
     string announced_job = "";
@@ -89,13 +115,7 @@ public class RoundsController : MonoBehaviour
 	void Update ()
     {
 
-        for (int i = 0; i < MasterControlProgram.num_players; i++)
-        {
-            Debug.Log(MasterControlProgram.scores[i]);
-
-        }
-        
-              
+               
         #region before_game
 
         if (!in_game)
@@ -154,9 +174,9 @@ public class RoundsController : MonoBehaviour
                         //////annouce themes//////
 
                         //job
-                        announced_job = MasterControlProgram.job_lookup[Random.Range(0, MasterControlProgram.job_lookup.Count-1)];
+                        announced_job = Global.job_lookup[Random.Range(0, Global.job_lookup.Count-1)];
                         //style
-                        announced_style = MasterControlProgram.style_lookup[Random.Range(0, MasterControlProgram.style_lookup.Count - 1)];
+                        announced_style = Global.style_lookup[Random.Range(0, Global.style_lookup.Count - 1)];
                         
                         clothePoolController.CreatePool();
 
@@ -208,11 +228,16 @@ public class RoundsController : MonoBehaviour
 
     void DetermineScores()
     {
-        for (int i = 0; i < MasterControlProgram.num_players; i++)
+        for (int i = 0; i < Global.num_players; i++)
         {
 
             if (PlayersController.players[i] == null)
                 return;
+
+            //Save old score as ref
+            Global.old_scores[i] = Global.scores[i];
+
+
 
             Character character = PlayersController.players[i].character;//character;
 
@@ -229,7 +254,7 @@ public class RoundsController : MonoBehaviour
             {
                 if (hat.theme == announced_job || hat.theme == announced_style)
                 {
-                    MasterControlProgram.scores[i] += 15;
+                    Global.scores[i] += 15;
 					audioControl.PlayClip (0);
 
                 }
@@ -239,7 +264,8 @@ public class RoundsController : MonoBehaviour
             {
                 if (shirt.theme == announced_job || shirt.theme == announced_style)
                 {
-                    MasterControlProgram.scores[i] += 15;
+                    Global.scores[i] += 15;
+                    audioControl.PlayClip(0);
 
                 }
             }
@@ -248,10 +274,24 @@ public class RoundsController : MonoBehaviour
             {
                 if (pants.theme == announced_job || pants.theme == announced_style)
                 {
-                    MasterControlProgram.scores[i] += 15;
+                    Global.scores[i] += 15;
+                    audioControl.PlayClip(0);
 
                 }
             }
+
+            //Full set
+            if ((hat_found) && (shirt_found) && (pants_found))
+            {
+                if (hat.theme == shirt.theme && shirt.theme == pants.theme)
+                {
+                    Global.scores[i] += 50;
+
+                }
+            }
+
+
+
 
 
         }
@@ -261,8 +301,16 @@ public class RoundsController : MonoBehaviour
 
     void UpdateUI()
     {
+
+        DetermineActiveScores();
+
+
+
+
         if (in_game)
         {
+            
+
             if (in_round)
             {
                 int sixty = 60;
@@ -282,9 +330,9 @@ public class RoundsController : MonoBehaviour
                 
                 //update hint 
                 if (announced_style == "coureurdesbois")
-                { hint_UI.text = "Un party de " + announced_job + "s à l'époque des" + announced_style + "."; }
+                { hint_UI.text = "La fête du 375 des " + announced_job + "s à l'époque des" + announced_style + "."; }
                 else
-                    hint_UI.text = "Un party de " + announced_job + "s à l'époque de la " + announced_style + ".";
+                    hint_UI.text = "La fête du 375 des" + announced_job + "s à l'époque de la " + announced_style + ".";
 
 
             }
@@ -306,8 +354,7 @@ public class RoundsController : MonoBehaviour
 
         }
 
-        DetermineActiveScores();
-
+       
 
     }
     
@@ -318,30 +365,53 @@ public class RoundsController : MonoBehaviour
     /////cancells the ones not played on
     void DetermineActiveScores()
     {
-        if (MasterControlProgram.num_players == 2)
+        
+        
+        if (Global.num_players == 2)
         {
-            score1_UI.text = MasterControlProgram.scores[0].ToString();
-            score2_UI.text = MasterControlProgram.scores[1].ToString();
+            displayed_score1 = Global.scores[0];
+
+            displayed_score2 = Global.scores[1];
+
+            score1_UI.text = displayed_score1.ToString();
+            score2_UI.text = displayed_score2.ToString();
             score3_UI.text = "";
             score4_UI.text = "";
-            
+
         }
 
-        if (MasterControlProgram.num_players == 3)
+        if (Global.num_players == 3)
         {
-            score1_UI.text = MasterControlProgram.scores[0].ToString();
-            score2_UI.text = MasterControlProgram.scores[1].ToString();
-            score3_UI.text = MasterControlProgram.scores[2].ToString();
+
+            displayed_score1 = Global.scores[0];
+
+            displayed_score2 = Global.scores[1];
+
+            displayed_score3 = Global.scores[2];
+
+
+            score1_UI.text = displayed_score1.ToString();
+            score2_UI.text = displayed_score2.ToString();
+            score3_UI.text = displayed_score3.ToString();
             score4_UI.text = "";
 
         }
 
-        if ((MasterControlProgram.num_players == 3))
+        if ((Global.num_players == 3))
         {
-            score1_UI.text = MasterControlProgram.scores[0].ToString();
-            score2_UI.text = MasterControlProgram.scores[1].ToString();
-            score3_UI.text = MasterControlProgram.scores[2].ToString();
-            score4_UI.text = MasterControlProgram.scores[3].ToString();
+             displayed_score1 = Global.scores[0];
+
+            displayed_score2 = Global.scores[1];
+
+            displayed_score3 = Global.scores[2];
+
+            displayed_score4 = Global.scores[3];
+
+
+            score1_UI.text = displayed_score1.ToString();
+            score2_UI.text = displayed_score2.ToString();
+            score3_UI.text = displayed_score3.ToString();
+            score4_UI.text = displayed_score4.ToString();
         }
         
     }

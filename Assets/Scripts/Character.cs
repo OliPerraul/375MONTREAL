@@ -19,6 +19,8 @@ public class Character : MonoBehaviour {
     private float max_scale;
 
     private SpriteRenderer sprite_rend;
+
+    private Sprite sprite;
     
     
     //contains the clothes
@@ -30,21 +32,30 @@ public class Character : MonoBehaviour {
     {
 		AudioController audio = (AudioController)FindObjectOfType (typeof(AudioController));
 		audioControl = audio;
-
-        transform.lossyScale.Set(1,1,1);
-
-        sprite_rend = GetComponent<SpriteRenderer>();
-        sprite_rend.color = PlayersController.player_colors[number - 1];
-
-
+              
         clothes = new Dictionary<Clothe.CLOTHE_TYPE, Clothe>();
 
-       
+        ChooseSprite();
+
+      
     }
-    
-	
-	// Update is called once per frame
-	void Update ()
+
+    /// <summary>
+    /// Choose the correct player sprite
+    /// </summary>
+    void ChooseSprite()
+    {
+        sprite_rend = GetComponent<SpriteRenderer>();
+
+        sprite = Resources.Load<Sprite>("Sprites/Characters/spr_char_" + number);
+        sprite_rend.sprite = sprite;
+
+    }
+
+
+
+    // Update is called once per frame
+    void Update ()
     {
        
         DetermineScale();
@@ -88,7 +99,10 @@ public class Character : MonoBehaviour {
 
     }
 
-
+    /// <summary>
+    /// Add clothe onto the player character
+    /// </summary>
+    /// <param name="clothe"></param>
     public void AddClothe(Clothe clothe) 
     {
        
@@ -118,26 +132,10 @@ public class Character : MonoBehaviour {
 			audioControl.PlayClip(5);
            
         }
-        
+
         //determine position on the character
-        switch (clothe_type)
-        {
-            case Clothe.CLOTHE_TYPE.HAT:
-                clothe.transform.position = transform.position;
-                break;
-            case Clothe.CLOTHE_TYPE.SHIRT:
-                clothe.transform.position = transform.position;//; +new Vector3(-.03f,-.155f,0);
-                break;
-            case Clothe.CLOTHE_TYPE.PANTS:
-                clothe.transform.position = transform.position;// + new Vector3(-.03f, -.255f, 0);
-                break;
-
-
-        }
-
-
-
-
+        clothe.transform.position = transform.position;
+        
 
     }
 

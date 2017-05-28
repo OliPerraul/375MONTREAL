@@ -35,33 +35,58 @@ public class Cursor : MonoBehaviour
 
     private SpriteRenderer sprite_rend;
 
+      private Sprite sprite;
+
     // Use this for initialization
     void Start ()
     {
-                
+        //Choose sprite
+        ChooseSprite();
 
         if (SceneManager.GetActiveScene().name == "gameplay")
         {
-            sprite_rend = GetComponent<SpriteRenderer>();
-            sprite_rend.color = PlayersController.player_colors[number - 1];
+            //sprite_rend = GetComponent<SpriteRenderer>();
+           // sprite_rend.color = PlayersController.player_colors[number - 1];
 
            // get character reference
              character = PlayersController.players[number - 1].character;
         }
 
-       
         
+       
      }
-	
-	// Update is called once per frame
-	void Update ()
+
+    /// <summary>
+    /// Choose the correct player sprite
+    /// </summary>
+    void ChooseSprite()
+    {
+        sprite_rend = GetComponent<SpriteRenderer>();
+
+        sprite = Resources.Load<Sprite>("Sprites/Cursors/spr_cursor" + number);
+        sprite_rend.sprite = sprite;
+
+    }
+
+
+    // Update is called once per frame
+    void Update ()
     {
         PlayerInputs();
 
 
         //update cursor pos
         transform.position += speed;
-		   
+
+
+        //make sure always a sprite assigned
+
+        if (sprite_rend.sprite == null)
+        {
+            sprite = Resources.Load<Sprite>("Sprites/Cursors/spr_cursor1");
+            sprite_rend.sprite = sprite;
+        }
+
     }
     
      
@@ -139,27 +164,68 @@ public class Cursor : MonoBehaviour
 			}
            
         }
-                
+
+        //cal bounce on edge method
+        
+
     }
 
 
-   // // Update is called once per frame
-   // void OnTriggerExit2D(Collider2D other)
-   // {
-		
-   //     if (other.gameObject.tag == "Clothe")
-   //     {
-			
-			////Debug.Log ("Exit is Holding"+isHolding);
 
-   //         Clothe clothe = other.GetComponent<Clothe>();
-   //               clothe.is_held = false;
-			//canHold = true;
+    //void OnTriggerEnter2D(Collider2D other)
+    //{
 
-           
-   //     }
+    //    //cal bounce on edge method
+    //    BounceOnScreenEdge(other);
 
-   // }
+    //}
+
+
+    ///// <summary>
+    ///// Helper method (Bounce on the edge of the screen)
+    ///// </summary>
+    //void BounceOnScreenEdge(Collider2D other)
+    //{
+    //    string tag = other.gameObject.tag;
+
+
+    //    if (tag == "leftboundary" || tag == "rightboundary")
+    //    {
+
+    //        speed.x = -speed.x;
+
+    //    }
+
+
+    //    if (tag == "topboundary" || tag == "bottomboundary")
+    //    {
+    //        speed.y = -speed.y;
+    //    }
+
+    //}
+
+
+
+
+
+
+    // // Update is called once per frame
+    // void OnTriggerExit2D(Collider2D other)
+    // {
+
+    //     if (other.gameObject.tag == "Clothe")
+    //     {
+
+    ////Debug.Log ("Exit is Holding"+isHolding);
+
+    //         Clothe clothe = other.GetComponent<Clothe>();
+    //               clothe.is_held = false;
+    //canHold = true;
+
+
+    //     }
+
+    // }
 
 
 }

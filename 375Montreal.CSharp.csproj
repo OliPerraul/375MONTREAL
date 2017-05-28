@@ -78,7 +78,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Classes\MasterControlProgram.cs" />
+    <Compile Include="Assets\Classes\Global.cs" />
+    <Compile Include="Assets\LevelBoundaries.cs" />
+    <Compile Include="Assets\Score_UI.cs" />
     <Compile Include="Assets\Scripts\Character.cs" />
     <Compile Include="Assets\Scripts\Clothe.cs" />
     <Compile Include="Assets\Scripts\Controller\AudioController.cs" />
@@ -90,6 +92,12 @@
     <Compile Include="Assets\Scripts\PerfectPixel.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\RoundsController.cs" />
+    <Compile Include="Assets\Winner_UI.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Resources\Sprites\Clothes\Hats\New Text Document.txt" />
+    <None Include="Assets\Resources\Sprites\Clothes\Pants\New Text Document.txt" />
+    <None Include="Assets\Resources\Sprites\Clothes\Shirts\New Text Document.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

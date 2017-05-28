@@ -153,56 +153,47 @@ public class Clothe : MonoBehaviour
 
         curr_speed = Vector3.Lerp(curr_speed, target_speed, deccel_rate);
         transform.position += curr_speed;
-
-        BounceOnScreenEdge();
         
     }
 
 
-    void BounceOnScreenEdge()
+    void OnTriggerEnter2D(Collider2D other)
     {
 
-        Camera cam = Camera.main;
-        Vector3 pos = Vector3.zero;
+      //  Debug.Log("colliding");
 
-        
-        Vector3 pos_bottom_left = cam.ScreenToWorldPoint(new Vector3(0, 0, 0));
-        Vector3 pos_top_right = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, cam.pixelHeight, 0));
+        //cal bounce on edge method
+        BounceOnScreenEdge(other);
 
-        if ((transform.position.x > pos_top_right.x) || (transform.position.x < pos_bottom_left.x))
+    }
+
+
+    /// <summary>
+    /// Helper method (Bounce on the edge of the screen)
+    /// </summary>
+    void BounceOnScreenEdge(Collider2D other)
+    {
+        string tag = other.gameObject.tag;
+
+
+        if (tag == "leftboundary" || tag == "rightboundary")
         {
-            is_held = false; //prevent cursor dragging item outside
-
             curr_speed.x = -curr_speed.x;
             target_speed.x = -target_speed.x;
 
+            is_held = false;
         }
-        
-        if ((transform.position.y > pos_top_right.y) || (transform.position.y < pos_bottom_left.y))
+
+
+        if (tag == "topboundary" || tag == "bottomboundary")
         {
-
-            is_held = false; //prevent cursor dragging item outside
-
             curr_speed.y = -curr_speed.y;
             target_speed.y = -target_speed.y;
 
+            is_held = false;
         }
 
-        
-
     }
-
-    //// Update is called once per frame
-    //void OnTriggerExit2D(Collider2D other)
-    //{
-    //    if (other.gameObject.tag == "Cursor")
-    //    {
-    //        is_held = false; //not helf if cursor not over
-
-    //    }
-
-
-    //}
 
 
 

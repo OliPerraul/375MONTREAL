@@ -23,7 +23,7 @@ public class ClothesPoolController : MonoBehaviour
     public void CreatePool()
     {
         //creates a copy of the lookup theme list
-        List<string> themes_list = CloneList<string>(MasterControlProgram.themes_lookup);
+        List<string> themes_list = CloneList<string>(Global.themes_lookup);
                 
         for (int i = 0; i < clothes_pool_size + 1; i++)
         {
@@ -84,6 +84,20 @@ public class ClothesPoolController : MonoBehaviour
             }
 
         }
+
+        object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
+        foreach (object o in obj)
+        {
+            GameObject g = (GameObject)o;
+            if (g.GetComponent<Clothe>() != null)
+            {
+                Clothe c = g.GetComponent<Clothe>();
+
+                if(!c.is_worn)
+                Destroy(g);
+            }
+        }
+
 
     }
 

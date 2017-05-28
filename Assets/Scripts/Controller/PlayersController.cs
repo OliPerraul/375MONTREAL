@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayersController : MonoBehaviour
 {
@@ -54,6 +55,25 @@ public class PlayersController : MonoBehaviour
     {
         transform.position = Vector3.zero; //force fixed pos
 
+        DetermineWinner();
+    }
+
+
+    private void DetermineWinner()
+    {
+
+        for (int i = 0; i < Global.num_players; i++)
+        {
+            if (Global.scores[0] >= 375)
+            {
+                Global.winner = players[i].number;
+                //goto new scene
+                SceneManager.LoadScene("end", LoadSceneMode.Single);
+
+            }
+
+        }
+
 
     }
 
@@ -73,7 +93,7 @@ public class PlayersController : MonoBehaviour
         Player player4;
 
 
-        switch (MasterControlProgram.num_players)
+        switch (Global.num_players)
         {
 
             case 2:

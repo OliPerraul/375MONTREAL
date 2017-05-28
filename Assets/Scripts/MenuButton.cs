@@ -56,7 +56,7 @@ public class MenuButton : MonoBehaviour
 
             if (A_pressed)
             {
-                MasterControlProgram.num_players = num_players;
+                Global.num_players = num_players;
                 //goto new scene
                 SceneManager.LoadScene("gameplay", LoadSceneMode.Single);
 
