@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Character : MonoBehaviour {
 
-
-    public int number { get; set; }
+    [SerializeField]
+    public int number;
     
     public bool receiving { get; set; }
     
@@ -20,10 +20,9 @@ public class Character : MonoBehaviour {
 
     private SpriteRenderer sprite_rend;
     
-
-
+    
     //contains the clothes
-    private Dictionary<Clothe.CLOTHE_TYPE, Clothe> clothes;
+    public Dictionary<Clothe.CLOTHE_TYPE, Clothe> clothes { get; set; }
     
 
     // Use this for initialization

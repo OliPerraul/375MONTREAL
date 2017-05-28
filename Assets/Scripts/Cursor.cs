@@ -11,20 +11,12 @@ public class Cursor : MonoBehaviour
     
     //character associated with given cursor
     private Character character;
-    
-    [SerializeField]
-    private float move_rate = .5f;
 
     [SerializeField]
-    private float accel_rate = .5f;
+    private float max_speed = 1.5f;
+
 
     //inputs
-
-    private float curr_x_speed = 0f;
-    private float curr_y_speed = 0f;
-    
-    private float target_x_speed = 0f;
-    private float target_y_speed = 0f;
 
     private Vector3 speed;
 
@@ -46,8 +38,7 @@ public class Cursor : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-
-        
+                
 
         if (SceneManager.GetActiveScene().name == "gameplay")
         {
@@ -77,44 +68,40 @@ public class Cursor : MonoBehaviour
 
     void PlayerInputs()
     {
+        float x_axis = Input.GetAxis(rightStick);
+		float y_axis = Input.GetAxis(leftStick);
+
+       
+        //if held left: neg max spd
+        float speed_x = 0;
+        if (x_axis < 0)
+             speed_x = -Mathf.Lerp(max_speed, 0, x_axis);
+         else
+             speed_x = Mathf.Lerp(0, max_speed, x_axis);
         
+        
+        //if held down: neg max spd
+        float speed_y = 0;
+        if (y_axis < 0)
+             speed_y = -Mathf.Lerp(max_speed, 0, y_axis);
+         else
+             speed_y = Mathf.Lerp(0, max_speed, y_axis);
 
-        Debug.Log(speed);
 
-        target_x_speed = Input.GetAxis(rightStick);
-		target_y_speed = Input.GetAxis(leftStick);
+            //set correct speed
+            speed.x = speed_x;
+        speed.y = speed_y;
 
-		A_pressed = Input.GetButtonDown(jumpButton);
+
+        Debug.Log(speed_x);
+        Debug.Log(speed_y);
+
+
+        A_pressed = Input.GetButtonDown(jumpButton);
 		A_held = Input.GetButton(jumpButton);
 		A_released = Input.GetButtonUp(jumpButton);
+        
 
-
-
-        //approximate to target
-        curr_x_speed = Mathf.Lerp(curr_x_speed, target_x_speed, accel_rate);
-        curr_y_speed = Mathf.Lerp(curr_y_speed, target_y_speed, accel_rate);
-
-        speed = new Vector3(curr_x_speed, curr_y_speed, 0f) * move_rate;
-
-        //speed check
-        float speed_check_x = Input.GetAxisRaw(rightStick);
-        float speed_check_y = Input.GetAxisRaw(leftStick);
-
-        if (speed_check_x == 0)
-            speed.x = 0;
-
-        if (speed_check_y == 0)
-            speed.y = 0;
-
-        speed_check_x = Input.GetAxis(rightStick);
-        speed_check_y = Input.GetAxis(leftStick);
-
-
-        if (speed_check_x < 0.15f && speed_check_x> -0.15f)
-            speed.x = 0;
-
-        if (speed_check_x < 0.15f && speed_check_x> -0.15f)
-            speed.y = 0;
 
         //adding clothes on character or let go clothe
         if (A_released)

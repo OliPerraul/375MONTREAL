@@ -52,6 +52,23 @@ public class RoundsController : MonoBehaviour
     [SerializeField]
     private TextMesh hint_UI;
 
+    
+
+    //SCORES UIs
+    [SerializeField]
+    private TextMesh score1_UI;
+
+    [SerializeField]
+    private TextMesh score2_UI;
+
+    [SerializeField]
+
+    private TextMesh score3_UI;
+
+    [SerializeField]
+    private TextMesh score4_UI;
+
+
 
     [SerializeField]
     private ClothesPoolController clothePoolController;
@@ -68,7 +85,14 @@ public class RoundsController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-               
+
+        for (int i = 0; i < MasterControlProgram.num_players; i++)
+        {
+            Debug.Log(MasterControlProgram.scores[i]);
+
+        }
+        
+              
         #region before_game
 
         if (!in_game)
@@ -154,6 +178,9 @@ public class RoundsController : MonoBehaviour
 
                         //reset timer to random
                         between_rounds_timer = time_between_rounds;
+
+                        DetermineScores();//determine the scores
+
                     }
                 }
             }
@@ -171,6 +198,57 @@ public class RoundsController : MonoBehaviour
     }
 
 
+    void DetermineScores()
+    {
+        for (int i = 0; i < MasterControlProgram.num_players; i++)
+        {
+
+            if (PlayersController.players[i] == null)
+                return;
+
+            Character character = PlayersController.players[i].character;//character;
+
+            Clothe hat; 
+            bool hat_found = character.clothes.TryGetValue(Clothe.CLOTHE_TYPE.HAT,out hat);
+
+            Clothe shirt;
+            bool shirt_found = character.clothes.TryGetValue(Clothe.CLOTHE_TYPE.SHIRT, out shirt);
+
+            Clothe pants;
+            bool pants_found = character.clothes.TryGetValue(Clothe.CLOTHE_TYPE.PANTS, out pants);
+
+            if (hat_found)
+            {
+                if (hat.theme == announced_job || hat.theme == announced_style)
+                {
+                    MasterControlProgram.scores[i] += 15;
+
+                }
+            }
+            
+            if (shirt_found)
+            {
+                if (shirt.theme == announced_job || shirt.theme == announced_style)
+                {
+                    MasterControlProgram.scores[i] += 15;
+
+                }
+            }
+
+            if (pants_found)
+            {
+                if (pants.theme == announced_job || pants.theme == announced_style)
+                {
+                    MasterControlProgram.scores[i] += 15;
+
+                }
+            }
+
+
+        }
+        
+    }
+    
 
     void UpdateUI()
     {
@@ -218,5 +296,48 @@ public class RoundsController : MonoBehaviour
             timer_UI.text=("0:00" );
 
         }
+
+        DetermineActiveScores();
+
+
     }
+    
+
+    
+
+
+    /////cancells the ones not played on
+    void DetermineActiveScores()
+    {
+        if (MasterControlProgram.num_players == 2)
+        {
+            score1_UI.text = MasterControlProgram.scores[0].ToString();
+            score2_UI.text = MasterControlProgram.scores[1].ToString();
+            score3_UI.text = "";
+            score4_UI.text = "";
+            
+        }
+
+        if (MasterControlProgram.num_players == 3)
+        {
+            score1_UI.text = MasterControlProgram.scores[0].ToString();
+            score2_UI.text = MasterControlProgram.scores[1].ToString();
+            score3_UI.text = MasterControlProgram.scores[2].ToString();
+            score4_UI.text = "";
+
+        }
+
+        if ((MasterControlProgram.num_players == 3))
+        {
+            score1_UI.text = MasterControlProgram.scores[0].ToString();
+            score2_UI.text = MasterControlProgram.scores[1].ToString();
+            score3_UI.text = MasterControlProgram.scores[2].ToString();
+            score4_UI.text = MasterControlProgram.scores[3].ToString();
+        }
+        
+    }
+
+    
+
+
 }

@@ -8,9 +8,8 @@ public static class MasterControlProgram
     public static int[] player_scores;
 
     //themes lookup
-    public static List<string> themes_lookup = new List<string> { "cirque", "construction", "hipster"};
-
-
+    public static List<string> themes_lookup = new List<string> { "cirque", "construction", "hipster", "bucheron", "disco", "gendarme", "hippie", "hipster", "pinup", "superhero", "ballerine", "prohibition"};
+    
     //style lookup
     // public static List<string> themes_lookup = new List<string> { "cirque", "construction", "hipster" };
 
@@ -25,6 +24,8 @@ public static class MasterControlProgram
 
     //public static List<string> themes_lookup = new List<string> { "industrialisation", "prohibition", "pinUp", "hippie", "disco", "glam", "hipHop", "coureur_des_bois", "gendarme", "bucheron", "clerge", "cirque", "construction", "hipster", "superhero", "ballerine", "dracula", "mozart", "legionnaire_romain", "pharaon" };
 
+        //contains the scores
+    public static int[] scores = new int[4];
 
-
+    
 }

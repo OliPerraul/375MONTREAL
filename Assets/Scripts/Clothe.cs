@@ -36,7 +36,7 @@ public class Clothe : MonoBehaviour
     /// <summary>
     /// Job or style
     /// </summary>
-    private string theme { get; set; }
+    public string theme { get; set; }
 
 
     private SpriteRenderer sprite_rend;
