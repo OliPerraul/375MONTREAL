@@ -15,25 +15,20 @@ Platform assembly: C:\Users\Eurocolt\Documents\GitHub\375Montreal\__hello_Data\M
 Loading C:\Users\Eurocolt\Documents\GitHub\375Montreal\__hello_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
 Platform assembly: C:\Users\Eurocolt\Documents\GitHub\375Montreal\__hello_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
 Loading C:\Users\Eurocolt\Documents\GitHub\375Montreal\__hello_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.052 seconds
+- Completed reload, in  0.091 seconds
 Platform assembly: C:\Users\Eurocolt\Documents\GitHub\375Montreal\__hello_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Eurocolt\Documents\GitHub\375Montreal\__hello_Data\Managed\System.dll (this message is harmless)
 desktop: 1600x900 60Hz; virtual: 1600x900 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 3.290230 ms
-The referenced script on this Behaviour (Game Object 'Audio Manager') is missing!
- 
-(Filename:  Line: 1743)
-
+UnloadTime: 1.455672 ms
 Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 4.870345 ms
+UnloadTime: 6.959774 ms
 
-Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 332.
-Total: 0.381451 ms (FindLiveObjects: 0.053026 ms CreateObjectMapping: 0.053026 ms MarkObjects: 0.236055 ms  DeleteObjects: 0.037631 ms)
+Unloading 9 unused Assets to reduce memory usage. Loaded Objects now: 373.
+Total: 0.655138 ms (FindLiveObjects: 0.065855 ms CreateObjectMapping: 0.061151 ms MarkObjects: 0.466550 ms  DeleteObjects: 0.060724 ms)
 
-The clothes are applied
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 3e44 -> priority: 1 
+  Thread -> id: 2660 -> priority: 1 

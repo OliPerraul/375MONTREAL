@@ -89,6 +89,7 @@
     <Compile Include="Assets\Scripts\Cursor.cs" />
     <Compile Include="Assets\Scripts\DeadzoneCamera.cs" />
     <Compile Include="Assets\Scripts\MenuButton.cs" />
+    <Compile Include="Assets\Scripts\MusicController.cs" />
     <Compile Include="Assets\Scripts\PerfectPixel.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\RoundsController.cs" />
@@ -96,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\Sprites\Clothes\Hats\New Text Document.txt" />
+    <None Include="Assets\Resources\Sprites\Clothes\New Text Document.txt" />
     <None Include="Assets\Resources\Sprites\Clothes\Pants\New Text Document.txt" />
     <None Include="Assets\Resources\Sprites\Clothes\Shirts\New Text Document.txt" />
   </ItemGroup>

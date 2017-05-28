@@ -18,9 +18,10 @@ public class MenuButton : MonoBehaviour
 
     [SerializeField]
     private float max_scale;
-
-   
-
+	[SerializeField]
+	private AudioSource BGM;
+	public AudioClip confirm;
+	public AudioClip hover;
     // Use this for initialization
     void Start ()
     {
@@ -56,9 +57,44 @@ public class MenuButton : MonoBehaviour
 
             if (A_pressed)
             {
-                Global.num_players = num_players;
-                //goto new scene
-                SceneManager.LoadScene("gameplay", LoadSceneMode.Single);
+
+                if (GetComponent<TextMesh>().text == "Play")
+                {
+                    PlayClip(confirm);
+                    Global.num_players = num_players;
+                    //goto new scene
+                    SceneManager.LoadScene("main_menu", LoadSceneMode.Single);
+                }
+                else
+                if (GetComponent<TextMesh>().text == "How to Play")
+                {
+                    PlayClip(confirm);
+                    Global.num_players = num_players;
+                    //goto new scene
+                    SceneManager.LoadScene("HOWTO", LoadSceneMode.Single);
+                }
+                else if (GetComponent<TextMesh>().text == "Main Menu")
+                {
+                    PlayClip(confirm);
+                    Global.num_players = num_players;
+                    //goto new scene
+                    SceneManager.LoadScene("SPLASH", LoadSceneMode.Single);
+                }
+                else if (GetComponent<TextMesh>().text == "Exit")
+                {
+
+                    PlayClip(confirm);
+                    //Global.num_players = num_players;
+                    Application.Quit();
+                }
+                else
+                {
+                    PlayClip(confirm);
+                    Global.num_players = num_players;
+                    //goto new scene
+                    SceneManager.LoadScene("gameplay", LoadSceneMode.Single);
+
+                }
 
 
             }
@@ -81,7 +117,17 @@ public class MenuButton : MonoBehaviour
 
         }
 
-    }
+	} void OnTriggerEnter2D(Collider2D other){
+		if (other.CompareTag("Cursor")){
+			PlayClip(hover);
+		}
+	}
+	public void PlayClip(AudioClip clip){
+		BGM.Stop ();
+		BGM.clip = clip;
+		BGM.Play ();
+
+	}
 
 
 }

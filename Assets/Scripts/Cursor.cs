@@ -51,7 +51,6 @@ public class Cursor : MonoBehaviour
            // get character reference
              character = PlayersController.players[number - 1].character;
         }
-
         
        
      }

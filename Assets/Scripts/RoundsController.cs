@@ -17,12 +17,12 @@ public class RoundsController : MonoBehaviour
     private int displayed_score4 = 0;
 
 
-    
+
 
     [SerializeField]
     private float score_trans_speed = .01f;
 
-    
+
     [SerializeField]
     private int points_annouced_theme = 15;
 
@@ -34,8 +34,8 @@ public class RoundsController : MonoBehaviour
     string announced_style = "";
 
     string announced_job = "";
-	[SerializeField]
-	private AudioController audioControl;
+    [SerializeField]
+    private AudioController audioControl;
 
     #region Timer
     // [SerializeField]//TODO REMOVE
@@ -58,10 +58,10 @@ public class RoundsController : MonoBehaviour
 
     //current time of the round
     float timer_rounds = 60f;
-    
+
     float between_rounds_timer = 20f;
     #endregion
-    
+
     #region Gamestates
     //bools
     bool in_game = false;
@@ -79,7 +79,7 @@ public class RoundsController : MonoBehaviour
     [SerializeField]
     private TextMesh hint_UI;
 
-    
+
 
     //SCORES UIs
     [SerializeField]
@@ -100,27 +100,27 @@ public class RoundsController : MonoBehaviour
     [SerializeField]
     private ClothesPoolController clothePoolController;
     #endregion
-    
+
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
-		AudioController audio = (AudioController)FindObjectOfType (typeof(AudioController));
-		audioControl = audio;
+        AudioController audio = (AudioController)FindObjectOfType(typeof(AudioController));
+        audioControl = audio;
         between_rounds_timer = 2f; //set interval between first round to be short
-        
+
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
 
-               
+
         #region before_game
 
         if (!in_game)
         {
-             timer_begin_game -= Time.deltaTime;
+            timer_begin_game -= Time.deltaTime;
 
 
 
@@ -140,13 +140,13 @@ public class RoundsController : MonoBehaviour
                 init_round = false; //set ready for next round
             }
 
-            
+
 
 
         }
 
         #endregion
-                
+
         #region in_game
         if (in_game)
         {
@@ -174,26 +174,26 @@ public class RoundsController : MonoBehaviour
                         //////annouce themes//////
 
                         //job
-                        announced_job = Global.job_lookup[Random.Range(0, Global.job_lookup.Count-1)];
+                        announced_job = Global.job_lookup[Random.Range(0, Global.job_lookup.Count - 1)];
                         //style
                         announced_style = Global.style_lookup[Random.Range(0, Global.style_lookup.Count - 1)];
-                        
+
                         clothePoolController.CreatePool();
 
 
 
                     }
-                 }
+                }
             }
             #endregion
-             
+
 
             #region in_round
             //if in round decrease timer
             if (in_round)
             {
                 timer_rounds -= Time.deltaTime;
-                
+
                 //if count down is over
                 if (timer_rounds < 0)
                 {
@@ -218,7 +218,7 @@ public class RoundsController : MonoBehaviour
 
         }
         #endregion
-        
+
 
         //UPDATE UI GRAPHIC
         UpdateUI();
@@ -241,8 +241,8 @@ public class RoundsController : MonoBehaviour
 
             Character character = PlayersController.players[i].character;//character;
 
-            Clothe hat; 
-            bool hat_found = character.clothes.TryGetValue(Clothe.CLOTHE_TYPE.HAT,out hat);
+            Clothe hat;
+            bool hat_found = character.clothes.TryGetValue(Clothe.CLOTHE_TYPE.HAT, out hat);
 
             Clothe shirt;
             bool shirt_found = character.clothes.TryGetValue(Clothe.CLOTHE_TYPE.SHIRT, out shirt);
@@ -255,11 +255,11 @@ public class RoundsController : MonoBehaviour
                 if (hat.theme == announced_job || hat.theme == announced_style)
                 {
                     Global.scores[i] += 15;
-					audioControl.PlayClip (0);
+                    audioControl.PlayClip(0);
 
                 }
             }
-            
+
             if (shirt_found)
             {
                 if (shirt.theme == announced_job || shirt.theme == announced_style)
@@ -295,9 +295,9 @@ public class RoundsController : MonoBehaviour
 
 
         }
-        
+
     }
-    
+
 
     void UpdateUI()
     {
@@ -309,7 +309,7 @@ public class RoundsController : MonoBehaviour
 
         if (in_game)
         {
-            
+
 
             if (in_round)
             {
@@ -318,16 +318,16 @@ public class RoundsController : MonoBehaviour
 
                 int seconds = 0;
 
-            
-                  sixty = 60;
-                 minute_count = (int)timer_rounds / sixty;
 
-                 seconds = Mathf.RoundToInt(timer_rounds % 60) - 1;
-                
+                sixty = 60;
+                minute_count = (int)timer_rounds / sixty;
+
+                seconds = Mathf.RoundToInt(timer_rounds % 60) - 1;
+
 
                 timer_UI.text = minute_count.ToString() + ":" + seconds.ToString();
 
-                
+
                 //update hint 
                 if (announced_style == "coureurdesbois")
                 { hint_UI.text = "La fête du 375 des " + announced_job + "s à l'époque des" + announced_style + "."; }
@@ -350,22 +350,21 @@ public class RoundsController : MonoBehaviour
         }
         else
         {
-            timer_UI.text=("0:00" );
+            timer_UI.text = ("0:00");
 
         }
 
-       
+
 
     }
-    
 
-    
+
+
 
 
     /////cancells the ones not played on
     void DetermineActiveScores()
     {
-        
         
         if (Global.num_players == 2)
         {
@@ -399,7 +398,7 @@ public class RoundsController : MonoBehaviour
 
         if ((Global.num_players == 3))
         {
-             displayed_score1 = Global.scores[0];
+            displayed_score1 = Global.scores[0];
 
             displayed_score2 = Global.scores[1];
 
@@ -413,10 +412,10 @@ public class RoundsController : MonoBehaviour
             score3_UI.text = displayed_score3.ToString();
             score4_UI.text = displayed_score4.ToString();
         }
-        
+
     }
 
-    
+
 
 
 }
