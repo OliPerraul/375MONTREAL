@@ -11,20 +11,13 @@ public class Cursor : MonoBehaviour
     
     //character associated with given cursor
     private Character character;
-    
-    [SerializeField]
-    private float move_rate = .5f;
 
     [SerializeField]
-    private float accel_rate = .5f;
+    private float max_speed = 1.5f;
+	[SerializeField]
+	private AudioController audioControl;
 
     //inputs
-
-    private float curr_x_speed = 0f;
-    private float curr_y_speed = 0f;
-    
-    private float target_x_speed = 0f;
-    private float target_y_speed = 0f;
 
     private Vector3 speed;
 
@@ -43,57 +36,132 @@ public class Cursor : MonoBehaviour
 
     private SpriteRenderer sprite_rend;
 
+      private Sprite sprite;
+
     // Use this for initialization
     void Start ()
     {
-
-        //get character reference
-        character = PlayersController.players[number - 1].character;
+		AudioController audio = (AudioController)FindObjectOfType (typeof(AudioController));
+		audioControl = audio;
+        //Choose sprite
+        ChooseSprite();
 
         if (SceneManager.GetActiveScene().name == "gameplay")
         {
-            sprite_rend = GetComponent<SpriteRenderer>();
-            sprite_rend.color = PlayersController.player_colors[number - 1];
+            //sprite_rend = GetComponent<SpriteRenderer>();
+           // sprite_rend.color = PlayersController.player_colors[number - 1];
+
+           // get character reference
+             character = PlayersController.players[number - 1].character;
         }
 
-       
         
+       
      }
-	
-	// Update is called once per frame
-	void Update ()
+
+    /// <summary>
+    /// Choose the correct player sprite
+    /// </summary>
+    void ChooseSprite()
+    {
+        sprite_rend = GetComponent<SpriteRenderer>();
+
+        sprite = Resources.Load<Sprite>("Sprites/Cursors/spr_cursor" + number);
+        sprite_rend.sprite = sprite;
+
+    }
+
+
+    // Update is called once per frame
+    void Update ()
     {
         PlayerInputs();
+        
+        //update cursor pos
+        //transform.position += speed;
 
 
+        //make sure always a sprite assigned
+
+        if (sprite_rend.sprite == null)
+        {
+            sprite = Resources.Load<Sprite>("Sprites/Cursors/spr_cursor1");
+            sprite_rend.sprite = sprite;
+        }
+
+
+        ///RESET IF NEEDED
+        Camera cam = Camera.main;
+
+        int right_screen = cam.pixelWidth;
+        int up_screen = cam.pixelHeight;
+
+
+        Vector3 top_right = cam.ScreenToWorldPoint(new Vector3(right_screen, up_screen, 0));
+        Vector3 bottom_left = cam.ScreenToWorldPoint(new Vector3(0,0, 0));
+
+        if (transform.position.x < bottom_left.x || transform.position.x > top_right.x)
+            ResetCursor();
+        
+    }
+
+    void LateUpdate()
+    {
         //update cursor pos
         transform.position += speed;
-		   
+
     }
-    
-     
+         
 
     void PlayerInputs()
     {
-		target_x_speed = Input.GetAxis(rightStick);
-		target_y_speed = Input.GetAxis(leftStick);
+        float x_axis = Input.GetAxis(rightStick);
+		float y_axis = Input.GetAxis(leftStick);
 
-		A_pressed = Input.GetButtonDown(jumpButton);
+       
+        //if held left: neg max spd
+        float speed_x = 0;
+        if (x_axis < 0)
+             speed_x = -Mathf.Lerp(max_speed, 0, x_axis);
+         else
+             speed_x = Mathf.Lerp(0, max_speed, x_axis);
+        
+        
+        //if held down: neg max spd
+        float speed_y = 0;
+        if (y_axis < 0)
+             speed_y = -Mathf.Lerp(max_speed, 0, y_axis);
+         else
+             speed_y = Mathf.Lerp(0, max_speed, y_axis);
+
+
+        //speed check
+        if (speed.magnitude > max_speed)
+        {
+            speed.Normalize();
+            speed *= max_speed;
+        }
+        
+                        
+        //set correct speed
+        speed.x = speed_x;
+        speed.y = speed_y;
+                        
+
+        A_pressed = Input.GetButtonDown(jumpButton);
 		A_held = Input.GetButton(jumpButton);
 		A_released = Input.GetButtonUp(jumpButton);
 
+		if(A_pressed){
+			audioControl.PlayClip (6);
+		}
 
 
-        //approximate to target
-        curr_x_speed = Mathf.Lerp(curr_x_speed, target_x_speed, accel_rate);
-        curr_y_speed = Mathf.Lerp(curr_y_speed, target_y_speed, accel_rate);
-
-        speed = new Vector3(curr_x_speed, curr_y_speed, 0f) * move_rate;
-
-        
         //adding clothes on character or let go clothe
-		 if (A_released)
+        if (A_released)
         {
+			audioControl.PlayClip (5);
+
             if (clothe_held != null)//if holding a clothe
             {
                 if (character.receiving == true)
@@ -111,43 +179,127 @@ public class Cursor : MonoBehaviour
     // Update is called once per frame
     void OnTriggerStay2D(Collider2D other)
     {
+        //Debug.Log("Stay on Trigger: " + other.name);
+
         if (other.gameObject.tag == "Clothe")
         {
-			
-			Debug.Log ("Enter is Holding"+isHolding);
-
+            //Check for alpha testing 
             Clothe clothe = other.GetComponent<Clothe>();
 			if ((A_held) && (!clothe.is_worn))
             {
-                clothe.is_held = true;
                 clothe_held = clothe;
+
+                if((clothe_held == clothe)||clothe_held == null)
+                clothe.is_held = true;
+                
 				isHolding = true;
 
                 clothe.curr_speed = speed;
 			}
            
         }
-                
+
+        //cal bounce on edge method
+        BounceOnScreenEdge(other);
+
+    }
+    
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+
+        BounceOnScreenEdge(other);
+
+        //Debug.Log("Entering Trigger: " + other.name);
+
+        //cal bounce on edge method
+        //BounceOnScreenEdge(other);
+
+    }
+
+    void OnTriggerExit2D(Collider2D trigger)
+    {
+   
+        if (trigger.gameObject.tag == "Clothe")
+        {
+
+            //Debug.Log ("Exit is Holding"+isHolding);
+
+            Clothe clothe = trigger.GetComponent<Clothe>();
+            clothe.is_held = false;
+            canHold = true;
+
+
+        }
+        else
+        {
+            BounceOnScreenEdge(trigger);
+        }
     }
 
 
-    // Update is called once per frame
-    void OnTriggerExit2D(Collider2D other)
+    /// <summary>
+    /// Helper method (Bounce on the edge of the screen)
+    /// </summary>
+    void BounceOnScreenEdge(Collider2D other)
     {
-		
-        if (other.gameObject.tag == "Clothe")
+        string tag = other.gameObject.tag;
+
+        if (tag == "leftboundary" || tag == "rightboundary")
         {
-			
-			Debug.Log ("Exit is Holding"+isHolding);
+            speed.x = -speed.x*2;
+            //update cursor pos
+            transform.position += speed;
+        }
 
-            Clothe clothe = other.GetComponent<Clothe>();
-                  clothe.is_held = false;
-			canHold = true;
 
-           
+        if (tag == "topboundary" || tag == "bottomboundary")
+        {
+            speed.y = -speed.y*2;
+            //update cursor pos
+            transform.position += speed;
         }
 
     }
+
+
+    void ResetCursor()
+    {
+
+        Camera cam = Camera.main;
+
+        int x_pos = cam.pixelWidth/2;
+        int y_pos = cam.pixelHeight/2;
+
+        Vector3 pos = cam.ScreenToWorldPoint(new Vector3(x_pos, y_pos, 0));
+        pos.z = 0;//kill z value
+      
+
+        transform.position = pos;
+
+    }
+
+
+
+
+
+    // Update is called once per frame
+    /* void OnTriggerExit2D(Collider2D other)
+    {
+
+        if (other.gameObject.tag == "Clothe")
+        {
+
+            //Debug.Log ("Exit is Holding"+isHolding);
+
+            Clothe clothe = other.GetComponent<Clothe>();
+            clothe.is_held = false;
+            canHold = true;
+
+
+        }
+
+    } */
 
 
 }
