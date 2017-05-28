@@ -87,15 +87,12 @@ public class Cursor : MonoBehaviour
          else
              speed_y = Mathf.Lerp(0, max_speed, y_axis);
 
-
-            //set correct speed
-            speed.x = speed_x;
+        
+        //set correct speed
+        speed.x = speed_x;
         speed.y = speed_y;
 
-
-        Debug.Log(speed_x);
-        Debug.Log(speed_y);
-
+                
 
         A_pressed = Input.GetButtonDown(jumpButton);
 		A_held = Input.GetButton(jumpButton);

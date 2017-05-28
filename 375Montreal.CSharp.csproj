@@ -81,6 +81,7 @@
     <Compile Include="Assets\Classes\MasterControlProgram.cs" />
     <Compile Include="Assets\Scripts\Character.cs" />
     <Compile Include="Assets\Scripts\Clothe.cs" />
+    <Compile Include="Assets\Scripts\Controller\AudioController.cs" />
     <Compile Include="Assets\Scripts\Controller\ClothesPoolController.cs" />
     <Compile Include="Assets\Scripts\Controller\PlayersController.cs" />
     <Compile Include="Assets\Scripts\Cursor.cs" />

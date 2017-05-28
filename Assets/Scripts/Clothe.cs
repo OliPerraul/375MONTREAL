@@ -141,8 +141,7 @@ public class Clothe : MonoBehaviour
             Movement();//apply movement
         }
 
-        
-
+      
     }
 
     void Movement()
@@ -193,17 +192,17 @@ public class Clothe : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Cursor")
-        {
-            is_held = false; //not helf if cursor not over
+    //// Update is called once per frame
+    //void OnTriggerExit2D(Collider2D other)
+    //{
+    //    if (other.gameObject.tag == "Cursor")
+    //    {
+    //        is_held = false; //not helf if cursor not over
 
-        }
+    //    }
 
 
-    }
+    //}
 
 
 

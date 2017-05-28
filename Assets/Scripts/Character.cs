@@ -24,10 +24,13 @@ public class Character : MonoBehaviour {
     //contains the clothes
     public Dictionary<Clothe.CLOTHE_TYPE, Clothe> clothes { get; set; }
     
-
+	private AudioController audioControl;
     // Use this for initialization
     void Start ()
     {
+		AudioController audio = (AudioController)FindObjectOfType (typeof(AudioController));
+		audioControl = audio;
+
         transform.lossyScale.Set(1,1,1);
 
         sprite_rend = GetComponent<SpriteRenderer>();
@@ -105,10 +108,14 @@ public class Character : MonoBehaviour {
 
             Vector3 reject_speed = new Vector3(Random.Range(1, 2), Random.Range(1, 2), 0); //determine reject speed
             clothe_out.curr_speed = reject_speed;
+			audioControl.PlayClip(5);
+
         }
         else //else add clothe normally
         {
             clothes.Add(clothe_type, clothe);//add new clothe
+			Debug.Log("The clothes are applied");
+			audioControl.PlayClip(5);
            
         }
         

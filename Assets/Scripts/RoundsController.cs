@@ -8,7 +8,8 @@ public class RoundsController : MonoBehaviour
     string announced_style = "";
 
     string announced_job = "";
-    
+	[SerializeField]
+	private AudioController audioControl;
 
     #region Timer
     // [SerializeField]//TODO REMOVE
@@ -78,6 +79,8 @@ public class RoundsController : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+		AudioController audio = (AudioController)FindObjectOfType (typeof(AudioController));
+		audioControl = audio;
         between_rounds_timer = 2f; //set interval between first round to be short
         
     }
@@ -146,6 +149,8 @@ public class RoundsController : MonoBehaviour
                         //reset timer to random
                         timer_rounds = Random.Range(min_round_time, max_round_time);
 
+
+
                         //////annouce themes//////
 
                         //job
@@ -154,6 +159,9 @@ public class RoundsController : MonoBehaviour
                         announced_style = MasterControlProgram.style_lookup[Random.Range(0, MasterControlProgram.style_lookup.Count - 1)];
                         
                         clothePoolController.CreatePool();
+
+
+
                     }
                  }
             }
@@ -222,6 +230,7 @@ public class RoundsController : MonoBehaviour
                 if (hat.theme == announced_job || hat.theme == announced_style)
                 {
                     MasterControlProgram.scores[i] += 15;
+					audioControl.PlayClip (0);
 
                 }
             }
